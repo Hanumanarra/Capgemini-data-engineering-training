@@ -130,3 +130,113 @@ having sum_salaries between 100000 and 200000
 GROUP BY with JOINs
   
 16. Find the total sales amount for each employee.
+
+  select e.emp_name,sum(s.amount) as Total_sales
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+order by Total_sales desc
+  
+17. List the number of sales made by each employee.
+
+  select e.emp_name,count(s.product) as no_of_sales
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+order by no_of_sales desc
+
+18.Find the total sales amount grouped by product.
+
+  select s.product,sum(s.amount) as total_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by product
+
+19.Calculate the average sales amount grouped by product.
+
+  select s.product,avg(s.amount) as avg_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by product
+
+20. Find employees who have made more than 2 sales, grouped by their names.
+
+select e.emp_name,count(s.product) as more_than_2sales
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+having more_than_2sales>2;
+
+Advanced GROUP BY
+21. Calculate the total salary and total sales amount for each employee.
+
+  select e.emp_name,sum(s.amount) as total_sales,sum(e.salary) as total_salary
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+  
+22. Count the number of unique products sold by each employee.
+ select e.emp_name,count(DISTINCT s.product) as unique_products
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+
+23. Find the highest sales amount made by each employee.
+  select e.emp_name,max(s.amount) as highest_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+
+24.Calculate the total sales amount grouped by product and filtered by products where the total exceeds 50,000.
+
+  select s.product,sum(s.amount) as total_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by product
+having total_sales_amount>50000;
+
+25. Find the departments with the highest average sales amount.
+
+  select e.department ,avg(s.amount) as avg_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by department
+order by avg_sales_amount desc 
+
+Real-World Scenarios
+26. Find the department with the highest total sales amount.
+  select e.department ,max(s.amount) as highest_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by department
+order by highest_sales_amount desc limit 1
+  
+27. Show the top 3 employees with the highest total sales amount, grouped by employee
+names.
+
+  select e.emp_name ,sum(s.amount) as highest_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by emp_name
+order by highest_sales_amount desc limit 3
+
+28.Calculate the total number of employees and the average salary, grouped by the year of joining.
+  select Extract(year from joining_date) as joining_year,count(*) as total_employee ,avg(salary) as avg_salary
+from Employee
+group by year(joining_date)
+order by joining_year
+  
+29. Find the total sales amount for each department (using a join between Employee and Sales).
+  select e.department ,sum(s.amount) as total_sales_amount
+from Employee e
+join Sales s on e.emp_id=s.emp_id
+group by department
+  
+30. Show employees who have not made any sales, grouped by their department
+
+select e.department ,count(*) as NO_sales
+from Employee e
+ left join Sales s on e.emp_id = s.emp_id
+where s.emp_id is NULL
+group by e.department
+
