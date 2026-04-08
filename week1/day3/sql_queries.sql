@@ -120,7 +120,7 @@ o For salaries above 80,000, experience above 5 years gets a 25% hike, otherwise
 o For salaries between 50,000 and 80,000, the hike is 15%.
 · If performance is 'B':
 o For experience above 5 years, the hike is 12%.
-o Otherwise, it's 10%.
+o Otherwise, it's' 10%.
 . For performance 'C', there is no hike.
 
 ans.
@@ -143,4 +143,109 @@ case
      ELSE "NO Hike"
 end as Salary_hike
 from Employee
+
+	2.Department and Performance
+Scenario: You are tasked with giving bonuses based on the department, performance rating, and experience:
+· For Finance department:
+o If performance is 'A' and experience is more than 10 years, bonus is 25% of salary.
+o Otherwise, bonus is 20%.
+· For HR department:
+o If performance is 'B' or experience is greater than 5 years, the bonus is 15%.
+o Otherwise, the bonus is 10%.
+· For other departments, the bonus is 8%.
+
+Ans.select *,
+case 
+	when department="Finance" then
+    	Case 
+        	when performance_rating="A" and experience>10 then "25% Hike"
+            else "20% Hike"
+        END
+    when department="HR" then 
+    	Case 
+        	when performance_rating="B" or experience >5 then "15% Hike"
+            else "10% Hike"
+        END
+    else "8% Hike"
+END as "Bonuse_based"
+from Employee
+
+Problem 3: Nested CASE for Employee Categorization Based on Salary, Performance, and ExperienceScenario: Categorize employees based on their salary, performance rating, and experience:
+· If salary is above 70,000:
+o If performance is 'A', and experience is more than 8 years, they are labeled 'Top Performer'.
+o If experience is less than 8 years, label them as 'Mid Performer'.
+· If salary is between 50,000 and 70,000, they are 'Average Performer' unless their performance is 'A', in which case they are 'Rising Star'.
+· If salary is below 50,000, they are 'Low Performer'.
+
+	ans.select *,
+case 
+	when salary>70000 then
+    	Case 
+        	when performance_rating="A" and experience>8 then "Top Performer"
+            when experience<8 then "Mid Performer"
+        END
+    when salary between 50000 and 70000  then 
+    	Case 
+        	when performance_rating="A" then "Rising Star"
+            else "Average Performer"
+        END
+    when salary<50000 then "Low Performer"
+END as "Employee_categorization"
+from Employee
+
+4.Nested CASE for Tax Bracket Based on Salary and Experience
+Scenario: You want to determine the tax bracket of employees based on their salary and experience:
+· If salary is above 90,000:
+o If experience is more than 10 years, they fall into the 35% tax bracket.
+o Otherwise, they fall into the 30% tax bracket.
+· If salary is between 60,000 and 90,000:
+o If experience is more than 5 years, they fall into the 25% tax bracket.
+o Otherwise, they fall into the 20% tax bracket.
+· For salaries below 60,000, the tax rate is 15%.
+ans.
+	select *,
+case 
+	when salary>90000 then
+    	Case 
+        	when  experience>10 then "35% Tax bracket"
+            else "30% Tax Bracket"
+        END
+    when salary between 60000 and 90000  then 
+    	Case 
+        	when experience>5 then "25% Tax Bracket"
+            else "20% Tax Bracket"
+        END
+    when salary<60000 then "15% Tax Bracket"
+END as "Determine_the_Tax_Bracket"
+from Employee
+
+Problem 5: Nested CASE for Promotion Eligibility Based on Performance, Salary, and Experience
+Scenario: You want to determine if employees are eligible for promotion based on their performance rating, salary, and experience:
+· If performance is 'A':
+§ If salary is more than 75,000 and experience is greater than 7 years, they are 'Eligible for Senior Role'.
+§ Otherwise, they are 'Eligible for Junior Role'.
+· If performance is 'B':
+§ If experience is more than 5 years, they are 'Eligible for Consideration'.
+§ Otherwise, they are 'Not Eligible'.
+· If performance is 'C', they are automatically 'Not Eligible'.
+
+	ans.
+	select *,
+case 
+	when performance_rating="A" then
+    	Case 
+        	when salary>75000 and  experience>7 then "Eligible For Senior Role"
+            else "Eligible for junior Role"
+        END
+    when performance_rating="B"  then 
+    	Case 
+        	when experience>5 then "Eligible for Consideration"
+            else "Not Eligible"
+        END
+    when Performance_rating="C" then "NOT Eligible"
+END as "Promotion_Eligibility"
+from Employee
+
+
+
 
